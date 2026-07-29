@@ -1,67 +1,66 @@
-package za.ac.cput.repository;
+package za.ac.cput.service.impl;
 /*
-DriverRepositoryTest.java
-Driver repository test
+DriverServiceImplTest.java
+Driver service test
 Author: Angel Dineo Masonganye (223008869)
 Date: 2026
 */
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Driver;
 import za.ac.cput.factory.DriverFactory;
-import za.ac.cput.repository.DriverRepo.IDriverRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.MethodName.class)
-public class DriverRepositoryTest {
+public class DriverServiceImplTest {
     @Autowired
-    private IDriverRepository repository;
+    private DriverServiceImpl service;
 
     private Driver driver;
 
     @BeforeEach
-    void a_setUp() {
+    void setUp() {
         driver = DriverFactory.buildDriver(
                 "Angel", "Masonganye", "LIC223008869", "0821234567", true);
     }
 
     @Test
-    void b_testCreate() {
-        Driver created = repository.save(driver);
+    void testCreate() {
+        Driver created = service.create(driver);
         assertNotNull(created);
+        assertEquals(driver.getId(), created.getId());
         System.out.println(created);
     }
 
     @Test
-    void c_testRead() {
-        repository.save(driver);
-        Driver read = repository.findById(driver.getId()).orElse(null);
+    void testRead() {
+        service.create(driver);
+        Driver read = service.read(driver.getId());
         assertNotNull(read);
         System.out.println(read);
     }
 
     @Test
-    void d_testUpdate() {
-        repository.save(driver);
+    void testUpdate() {
+        service.create(driver);
         Driver updated = new Driver.Builder()
                 .copy(driver)
                 .setFirstName("Dineo")
+                .setAvailability(false)
                 .build();
-        Driver result = repository.save(updated);
+        Driver result = service.update(updated);
         assertNotNull(result);
         assertEquals("Dineo", result.getFirstName());
         System.out.println(result);
     }
 
     @Test
-    void e_testDelete() {
-        repository.save(driver);
-        repository.deleteById(driver.getId());
-        assertFalse(repository.existsById(driver.getId()));
+    void testDelete() {
+        service.create(driver);
+        boolean deleted = service.delete(driver.getId());
+        assertTrue(deleted);
+        assertNull(service.read(driver.getId()));
     }
 }
