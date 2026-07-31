@@ -6,26 +6,25 @@ Customer module class
 Author: YAMKELA MGCUBHE (222040114)
 Date: 2026
  */
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "customers")
 public class Customer {
- private String customerId;
- private String customerName;
- private String phoneNumber;
- private String email;
- private String address;
 
- public Customer() {
+    @Id
+    private String customerId;
+    private String customerName;
+    private String phoneNumber;
+    private String email;
+    private String address;
 
- }
-
-    public Customer(String customerId, String customerName, String phoneNumber, String email ,String address) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.address = address;
+    public Customer() {
     }
 
-    public Customer(Builder builder){
+    public Customer(Builder builder) {
         this.customerId = builder.customerId;
         this.customerName = builder.customerName;
         this.phoneNumber = builder.phoneNumber;
@@ -53,7 +52,6 @@ public class Customer {
         return address;
     }
 
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -66,12 +64,12 @@ public class Customer {
     }
 
     public static class Builder {
+
         private String customerId;
         private String customerName;
         private String phoneNumber;
         private String email;
         private String address;
-
 
         public Builder setCustomerId(String customerId) {
             this.customerId = customerId;
@@ -98,18 +96,17 @@ public class Customer {
             return this;
         }
 
-        public Builder copy(Customer customer){
+        public Builder copy(Customer customer) {
             this.customerId = customer.customerId;
             this.customerName = customer.customerName;
             this.phoneNumber = customer.phoneNumber;
             this.email = customer.email;
             this.address = customer.address;
-
             return this;
         }
-        public Customer build(){
+
+        public Customer build() {
             return new Customer(this);
         }
-
     }
 }
