@@ -1,12 +1,17 @@
 package za.ac.cput.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 /*
 Route.java
 Route module class
 Author: Ntombozuko Palisa Mchophele(240455789)
 Date: 2026
  */
+@Entity
 public class Route {
+    @Id
     private String routeId;
     private String driverId;
     private String startLocation;
@@ -14,7 +19,7 @@ public class Route {
     private float distance;
     private int estimateTime;
 
-    private Route() {
+    public Route() {
     }
 
     private Route(Builder builder) {
