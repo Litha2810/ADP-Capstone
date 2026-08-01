@@ -1,13 +1,16 @@
 package za.ac.cput.domain;
-
 /*
 Driver.java
 Driver module class
 Author: Angel Dineo Masonganye (223008869)
 Date: 2026
  */
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
+@Entity
 public class Driver {
+    @Id
     private String id;
     private String firstName;
     private String lastName;
@@ -59,17 +62,15 @@ public class Driver {
         public Builder setLicenseNumber(String licenseNumber) { this.licenseNumber = licenseNumber; return this; }
         public Builder setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; return this; }
         public Builder setAvailability(boolean availability) { this.availability = availability; return this; }
-
         public Builder copy(Driver driver) {
-            this.id=driver.id;
-            this.firstName=driver.firstName;
-            this.lastName=driver.lastName;
-            this.licenseNumber=driver.licenseNumber;
-            this.phoneNumber=driver.phoneNumber;
-            this.availability= driver.availability;
+            this.id = driver.id;
+            this.firstName = driver.firstName;
+            this.lastName = driver.lastName;
+            this.licenseNumber = driver.licenseNumber;
+            this.phoneNumber = driver.phoneNumber;
+            this.availability = driver.availability;
             return this;
         }
-
         public Driver build() { return new Driver(this); }
     }
 }
