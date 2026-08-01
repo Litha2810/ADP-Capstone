@@ -15,12 +15,12 @@ DeliveryOrdersRepositoryTest.java
 Delivery Orders module class
 Author: Ryle Peter May (230333907)
 Date: 2026
- */
-
-import static org.junit.jupiter.api.Assertions.*;
-@TestMethodOrder(MethodOrderer.MethodName.class)
-class DeliveryOrdersRepositoryTest {
+// */
 //
+//import static org.junit.jupiter.api.Assertions.*;
+//@TestMethodOrder(MethodOrderer.MethodName.class)
+//class DeliveryOrdersRepositoryTest {
+////
 //    static IDeliveryOrdersRepository repository = DeliveryOrdersRepository.getRepository();
 //
 //    static LocalDate orderDate = LocalDate.of(2026,Month.MARCH,25);
@@ -79,4 +79,4 @@ class DeliveryOrdersRepositoryTest {
 //        List<DeliveryOrders> allOrders = repository.getAllOrders();
 //        System.out.println("All Orders: "+ allOrders);
 //    }
-}
+//}
