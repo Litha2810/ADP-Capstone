@@ -58,25 +58,21 @@ public class Vehicle {
     @Column(nullable = false)
     private LocalDate lastService;
 
-    /*
-     * One Vehicle is assigned to One Driver
-     */
+
     @OneToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    /*
-     * One Vehicle carries many Shipments
-     */
+
     @OneToMany(mappedBy = "vehicle",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<Shipment> shipments = new ArrayList<>();
 
-    protected Vehicle() {
+    public Vehicle() {
     }
 
-    public Vehicle(String vehicleId,
+    protected Vehicle(String vehicleId,
                    String numberPlate,
                    VehicleType type,
                    float capacity,
