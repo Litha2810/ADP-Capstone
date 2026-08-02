@@ -1,17 +1,24 @@
 package za.ac.cput.domain;
 
-import java.time.LocalDate;
-
-
 /*
 Vehicle.java
 Vehicle model class
 Author: Litha Owethu Mazibuko (240143485)
 Date: 2026
- */
+*/
 
+
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "vehicle")
 public class Vehicle {
-    public enum VehicleType{
+
+    public enum VehicleType {
         TRUCK,
         VAN,
         BAKKIE,
@@ -19,7 +26,7 @@ public class Vehicle {
         TRAILER
     }
 
-    public enum VehicleStatus{
+    public enum VehicleStatus {
         AVAILABLE,
         IN_USE,
         IN_SERVICE,
@@ -27,18 +34,58 @@ public class Vehicle {
         RESERVED
     }
 
+    @Id
+    @Column(name = "vehicle_id")
     private String vehicleId;
-     private String numberPlate;
-     private VehicleType type;
-     private float capacity;
-     private VehicleStatus currentStatus;
-     private float mileage;
-     private LocalDate lastService;
 
-    private Vehicle(){
+    @Column(nullable = false, unique = true)
+    private String numberPlate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private VehicleType type;
+
+    @Column(nullable = false)
+    private float capacity;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private VehicleStatus currentStatus;
+
+    @Column(nullable = false)
+    private float mileage;
+
+    @Column(nullable = false)
+    private LocalDate lastService;
+
+    /*
+     * One Vehicle is assigned to One Driver
+     */
+    @OneToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
+
+    /*
+     * One Vehicle carries many Shipments
+     */
+    @OneToMany(mappedBy = "vehicle",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<Shipment> shipments = new ArrayList<>();
+
+    protected Vehicle() {
     }
 
-public Vehicle(String vehicleId, String numberPlate, VehicleType type, float capacity, VehicleStatus currentStatus, float mileage, LocalDate lastService) {
+    public Vehicle(String vehicleId,
+                   String numberPlate,
+                   VehicleType type,
+                   float capacity,
+                   VehicleStatus currentStatus,
+                   float mileage,
+                   LocalDate lastService,
+                   Driver driver,
+                   List<Shipment> shipments) {
+
         this.vehicleId = vehicleId;
         this.numberPlate = numberPlate;
         this.type = type;
@@ -46,7 +93,9 @@ public Vehicle(String vehicleId, String numberPlate, VehicleType type, float cap
         this.currentStatus = currentStatus;
         this.mileage = mileage;
         this.lastService = lastService;
-}
+        this.driver = driver;
+        this.shipments = shipments;
+    }
 
     private Vehicle(Builder builder) {
         this.vehicleId = builder.vehicleId;
@@ -56,6 +105,8 @@ public Vehicle(String vehicleId, String numberPlate, VehicleType type, float cap
         this.currentStatus = builder.currentStatus;
         this.mileage = builder.mileage;
         this.lastService = builder.lastService;
+        this.driver = builder.driver;
+        this.shipments = builder.shipments;
     }
 
     public String getVehicleId() {
@@ -86,21 +137,29 @@ public Vehicle(String vehicleId, String numberPlate, VehicleType type, float cap
         return lastService;
     }
 
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public List<Shipment> getShipments() {
+        return shipments;
+    }
 
     @Override
     public String toString() {
         return "Vehicle{" +
                 "vehicleId='" + vehicleId + '\'' +
-                ", numberPlate" + numberPlate + '\'' +
-                ", type='" + type + '\'' +
-                ", capacity='" + capacity + '\'' +
-                ", currentStatus=" + currentStatus + '\'' +
-                ", mileage=" + mileage + '\'' +
-                ", lastService" + lastService +
+                ", numberPlate='" + numberPlate + '\'' +
+                ", type=" + type +
+                ", capacity=" + capacity +
+                ", currentStatus=" + currentStatus +
+                ", mileage=" + mileage +
+                ", lastService=" + lastService +
                 '}';
     }
 
     public static class Builder {
+
         private String vehicleId;
         private String numberPlate;
         private VehicleType type;
@@ -108,6 +167,8 @@ public Vehicle(String vehicleId, String numberPlate, VehicleType type, float cap
         private VehicleStatus currentStatus;
         private float mileage;
         private LocalDate lastService;
+        private Driver driver;
+        private List<Shipment> shipments = new ArrayList<>();
 
         public Builder setVehicleId(String vehicleId) {
             this.vehicleId = vehicleId;
@@ -144,6 +205,16 @@ public Vehicle(String vehicleId, String numberPlate, VehicleType type, float cap
             return this;
         }
 
+        public Builder setDriver(Driver driver) {
+            this.driver = driver;
+            return this;
+        }
+
+        public Builder setShipments(List<Shipment> shipments) {
+            this.shipments = shipments;
+            return this;
+        }
+
         public Builder copy(Vehicle vehicle) {
             this.vehicleId = vehicle.vehicleId;
             this.numberPlate = vehicle.numberPlate;
@@ -151,47 +222,14 @@ public Vehicle(String vehicleId, String numberPlate, VehicleType type, float cap
             this.capacity = vehicle.capacity;
             this.currentStatus = vehicle.currentStatus;
             this.mileage = vehicle.mileage;
-            this.lastService =vehicle.lastService;
+            this.lastService = vehicle.lastService;
+            this.driver = vehicle.driver;
+            this.shipments = vehicle.shipments;
             return this;
-
         }
 
         public Vehicle build() {
             return new Vehicle(this);
         }
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -10,7 +10,7 @@ import static za.ac.cput.util.Helper.*;
 
 /*
 VehicleFactory.java
-Vehicle model class
+Vehicle factory model class
 Author: Litha Owethu Mazibuko (240143485)
 Date: 2026
  */
@@ -33,7 +33,7 @@ public class VehicleFactory {
             return null;
         }
 
-        if(Helper.isValidType(type)|| Helper.isValidType(currentStatus)){
+        if(!Helper.isValidType(type) || !Helper.isValidType(currentStatus)){
             return null;
         }
 
