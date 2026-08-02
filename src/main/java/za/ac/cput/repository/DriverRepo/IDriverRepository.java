@@ -1,17 +1,15 @@
 package za.ac.cput.repository.DriverRepo;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import za.ac.cput.domain.Driver;
-import za.ac.cput.repository.IRepository;
-
-import java.util.List;
 
 /*
 IDriverRepository.java
-Driver module class
+Driver repository interface
 Author: Angel Dineo Masonganye (223008869)
 Date: 2026
- */
-
-public interface IDriverRepository extends IRepository<Driver, String> {
-    List<Driver> getAllDrivers();
+*/
+@Repository
+public interface IDriverRepository extends JpaRepository<Driver, String> {
 }

@@ -11,6 +11,7 @@ Route module class
 Author: Ntombozuko Palisa Mchophele(240455789)
 Date: 2026
  */
+@Deprecated
 public interface IRouteRepository extends IRepository<Route, String> {
     List<Route> getAll();
 }
