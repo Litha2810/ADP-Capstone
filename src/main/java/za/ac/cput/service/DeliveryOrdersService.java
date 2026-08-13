@@ -1,6 +1,8 @@
 package za.ac.cput.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.DeliveryOrders;
 import za.ac.cput.repository.DeliveryOrdersRepo.DeliveryOrdersRepository;
@@ -39,4 +41,16 @@ public class DeliveryOrdersService implements IDeliveryOrdersService {
     public List<DeliveryOrders> getAllDeliveryOrders() {
         return this.repository.findAll();
     }
+
+
+    @Override
+    public Page<DeliveryOrders> getPagedOrders(Pageable pageable){
+    return this.repository.findAll(pageable);
+    }
+
+    @Override
+    public  Page<DeliveryOrders> searchOrders(String search, Pageable pageable){
+        return this.repository.searchOrders(search, pageable);
+    }
+
 }

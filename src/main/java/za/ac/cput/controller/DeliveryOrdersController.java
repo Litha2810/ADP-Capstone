@@ -1,6 +1,10 @@
 package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.DeliveryOrders;
 import za.ac.cput.service.DeliveryOrdersService;
@@ -9,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/deliveryOrders")//to-do
+@CrossOrigin("http://localhost:8081/")
 public class DeliveryOrdersController {
     private DeliveryOrdersService service;
 
@@ -38,6 +43,25 @@ public class DeliveryOrdersController {
     @GetMapping("/getAll")
     public List<DeliveryOrders> getAllDeliveryOrders(){
         return this.service.getAllDeliveryOrders();
+    }
+
+    @GetMapping("/search")
+    public Page<DeliveryOrders> getOrdersPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "orderDate") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction,
+            @RequestParam(required = false) String search
+    ){
+        Sort sort = direction.equalsIgnoreCase("desc")? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page,size,sort);
+
+        if(search != null && !search.isBlank()){
+            return this.service.searchOrders(search, pageable);
+        }
+
+        return this.service.getPagedOrders(pageable);
     }
 
 }

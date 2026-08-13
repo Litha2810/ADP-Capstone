@@ -1,9 +1,14 @@
 package za.ac.cput.repository.DeliveryOrdersRepo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import za.ac.cput.domain.DeliveryOrders;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,74 +20,16 @@ Date: 2026
  */
 @Repository
 public interface DeliveryOrdersRepository extends JpaRepository<DeliveryOrders, String> {
+//    List<DeliveryOrders> findByCustomer_CustomerId(String CustomerId);
+//    List<DeliveryOrders> findByDeliveryStatus(DeliveryOrders.Status deliveryStatus);
+//    List<DeliveryOrders> findByDeliveryDate(LocalDate deliveryDate);
 
-//    public static IDeliveryOrdersRepository repository = null;
-//    private List<DeliveryOrders> ordersList;
-//
-//    private DeliveryOrdersRepository(){
-//        ordersList = new ArrayList<>();
-//    }
-//
-//    public static IDeliveryOrdersRepository getRepository(){
-//        if(repository==null){
-//            repository = new DeliveryOrdersRepository();
-//        }
-//        return repository;
-//    }
-//
-//    @Override
-//    public DeliveryOrders create(DeliveryOrders deliveryOrder) {
-//        boolean success = ordersList.add(deliveryOrder);
-//        if(success){
-//            return deliveryOrder;
-//        }
-//        return null;
-//    }
-//
-//    @Override
-//    public DeliveryOrders read(String orderId) {
-//
-//       for(DeliveryOrders orders:ordersList){
-//           if(orders.getOrderId().equals(orderId)){
-//               return orders;
-//           }
-//       }
-//        return null;
-//    }
-//
-//    @Override
-//    public DeliveryOrders update(DeliveryOrders deliveryOrders) {
-//        String id = deliveryOrders.getOrderId();
-//        DeliveryOrders oldOrder = read(id);
-//
-//        if(oldOrder==null){
-//            return null;
-//        }
-//
-//        boolean success = ordersList.remove(oldOrder);
-//
-//        if(!success){
-//            return null;
-//        }
-//
-//        if(ordersList.add(deliveryOrders)){
-//            return deliveryOrders;
-//        }
-//        return null;
-//    }
-//
-//    @Override
-//    public boolean delete(String orderId) {
-//        DeliveryOrders orderToDelete = read(orderId);
-//
-//        if(orderToDelete==null){
-//            return false;
-//        }
-//        return ordersList.remove(orderToDelete);
-//    }
-//
-//    @Override
-//    public List<DeliveryOrders> getAllOrders() {
-//        return ordersList;
-//    }
+//    @Query("SELECT d FROM DeliveryOrders d WHERE " +
+//            "LOWER(d.orderId) LIKE LOWER(CONCAT('%', :search, '%') ) OR " +
+//            "LOWER(d.customerId.customerName) LIKE LOWER(CONCAT('%', :search, '%'))") // Using query annotation to create custom query with jpsql
+@Query("SELECT d FROM DeliveryOrders d WHERE " +
+        "LOWER(d.orderId) LIKE LOWER(CONCAT('%', :search, '%') )")
+
+    Page<DeliveryOrders> searchOrders(@Param("search") String search, Pageable pageable);//this could be the wrong pageable and page so take note of this incase of errors
+
 }
