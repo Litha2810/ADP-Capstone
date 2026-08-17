@@ -65,3 +65,4 @@ public class VehicleService implements IVehicleService {
         return repository.findAll();
     }
 }
+

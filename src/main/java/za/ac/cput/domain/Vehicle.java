@@ -7,12 +7,13 @@ Author: Litha Owethu Mazibuko (240143485)
 Date: 2026
 */
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "vehicle")
@@ -35,52 +36,30 @@ public class Vehicle {
     }
 
     @Id
-    @Column(name = "vehicle_id")
     private String vehicleId;
-
-    @Column(nullable = false, unique = true)
     private String numberPlate;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private VehicleType type;
-
-    @Column(nullable = false)
     private float capacity;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+
     private VehicleStatus currentStatus;
-
-    @Column(nullable = false)
     private float mileage;
-
-    @Column(nullable = false)
     private LocalDate lastService;
-
-
-    @OneToOne
-    @JoinColumn(name = "driver_id")
-    private Driver driver;
-
-
-    @OneToMany(mappedBy = "vehicle",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    private List<Shipment> shipments = new ArrayList<>();
 
     public Vehicle() {
     }
 
-    protected Vehicle(String vehicleId,
-                   String numberPlate,
-                   VehicleType type,
-                   float capacity,
-                   VehicleStatus currentStatus,
-                   float mileage,
-                   LocalDate lastService,
-                   Driver driver,
-                   List<Shipment> shipments) {
+    protected Vehicle(
+            String vehicleId,
+            String numberPlate,
+            VehicleType type,
+            float capacity,
+            VehicleStatus currentStatus,
+            float mileage,
+            LocalDate lastService) {
 
         this.vehicleId = vehicleId;
         this.numberPlate = numberPlate;
@@ -89,8 +68,6 @@ public class Vehicle {
         this.currentStatus = currentStatus;
         this.mileage = mileage;
         this.lastService = lastService;
-        this.driver = driver;
-        this.shipments = shipments;
     }
 
     private Vehicle(Builder builder) {
@@ -101,9 +78,8 @@ public class Vehicle {
         this.currentStatus = builder.currentStatus;
         this.mileage = builder.mileage;
         this.lastService = builder.lastService;
-        this.driver = builder.driver;
-        this.shipments = builder.shipments;
     }
+
 
     public String getVehicleId() {
         return vehicleId;
@@ -133,14 +109,6 @@ public class Vehicle {
         return lastService;
     }
 
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public List<Shipment> getShipments() {
-        return shipments;
-    }
-
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -154,6 +122,7 @@ public class Vehicle {
                 '}';
     }
 
+    // Builder
     public static class Builder {
 
         private String vehicleId;
@@ -163,8 +132,6 @@ public class Vehicle {
         private VehicleStatus currentStatus;
         private float mileage;
         private LocalDate lastService;
-        private Driver driver;
-        private List<Shipment> shipments = new ArrayList<>();
 
         public Builder setVehicleId(String vehicleId) {
             this.vehicleId = vehicleId;
@@ -201,16 +168,6 @@ public class Vehicle {
             return this;
         }
 
-        public Builder setDriver(Driver driver) {
-            this.driver = driver;
-            return this;
-        }
-
-        public Builder setShipments(List<Shipment> shipments) {
-            this.shipments = shipments;
-            return this;
-        }
-
         public Builder copy(Vehicle vehicle) {
             this.vehicleId = vehicle.vehicleId;
             this.numberPlate = vehicle.numberPlate;
@@ -219,8 +176,7 @@ public class Vehicle {
             this.currentStatus = vehicle.currentStatus;
             this.mileage = vehicle.mileage;
             this.lastService = vehicle.lastService;
-            this.driver = vehicle.driver;
-            this.shipments = vehicle.shipments;
+
             return this;
         }
 
