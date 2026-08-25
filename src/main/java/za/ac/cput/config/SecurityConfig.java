@@ -31,7 +31,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder){
         UserDetails admin = User.withUsername("admin")
-                .password(encoder.encode("admin1234"))
+                .password(encoder.encode("admin"))
                 .roles("ADMIN").
                 build();
 
@@ -60,7 +60,7 @@ public class SecurityConfig {
     }
     @Bean public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http//localhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

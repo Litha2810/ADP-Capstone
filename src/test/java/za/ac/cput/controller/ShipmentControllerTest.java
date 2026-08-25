@@ -8,8 +8,9 @@ package za.ac.cput.controller;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+//import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
 import za.ac.cput.domain.Shipment;
 import za.ac.cput.factory.ShipmentFactory;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ShipmentControllerTest {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+
+    private RestTemplate restTemplate;
 
     private static Shipment shipment;
     private final String BASE_URL = "/shipment";

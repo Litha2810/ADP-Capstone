@@ -1,35 +1,50 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
+import java.util.List;
+
 /*
 Customer.java
 Customer module class
 Author: YAMKELA MGCUBHE (222040114)
 Date: 2026
  */
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
 @Entity
-@Table(name = "customers")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Customer {
-
     @Id
     private String customerId;
     private String customerName;
     private String phoneNumber;
     private String email;
     private String address;
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+//    @JsonManagedReference // to stop stackoverflow due to bidirectional relationship
+    private List<DeliveryOrders> orders;
 
     public Customer() {
+
     }
 
-    public Customer(Builder builder) {
+    public Customer(String customerId, String customerName, String phoneNumber, String email ,String address, List<DeliveryOrders> orders) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.orders=orders;
+    }
+
+    public Customer(Builder builder){
         this.customerId = builder.customerId;
         this.customerName = builder.customerName;
         this.phoneNumber = builder.phoneNumber;
         this.email = builder.email;
         this.address = builder.address;
+        this.orders = builder.orders;
     }
 
     public String getCustomerId() {
@@ -52,6 +67,9 @@ public class Customer {
         return address;
     }
 
+    public List<DeliveryOrders> getOrders(){return orders;}
+
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -64,12 +82,14 @@ public class Customer {
     }
 
     public static class Builder {
-
         private String customerId;
         private String customerName;
         private String phoneNumber;
         private String email;
         private String address;
+        private List<DeliveryOrders> orders;
+
+
 
         public Builder setCustomerId(String customerId) {
             this.customerId = customerId;
@@ -96,17 +116,23 @@ public class Customer {
             return this;
         }
 
-        public Builder copy(Customer customer) {
+        public Builder setOrders(List<DeliveryOrders> orders){
+            this.orders = orders;
+            return this;
+        }
+
+        public Builder copy(Customer customer){
             this.customerId = customer.customerId;
             this.customerName = customer.customerName;
             this.phoneNumber = customer.phoneNumber;
             this.email = customer.email;
             this.address = customer.address;
+
             return this;
         }
-
-        public Customer build() {
+        public Customer build(){
             return new Customer(this);
         }
+
     }
 }

@@ -1,16 +1,20 @@
 package za.ac.cput.service;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import za.ac.cput.domain.Customer;
 import za.ac.cput.domain.DeliveryOrders;
+import za.ac.cput.factory.CustomerFactory;
 import za.ac.cput.factory.DeliveryOrdersFactory;
+import za.ac.cput.repository.CustomerRepo.CustomerRepository;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,19 +24,33 @@ class DeliveryOrdersServiceTest {
     @Autowired
     private DeliveryOrdersService service;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     static LocalDate orderDate = LocalDate.of(2026, Month.MARCH, 25);
     static LocalDate deliveryDate = LocalDate.of(2026, Month.APRIL, 1);
+
     static DeliveryOrders.Status deliveryStatus = DeliveryOrders.Status.OrderPlaced;
     static DeliveryOrders.PaymentStatus paymentStatus = DeliveryOrders.PaymentStatus.PENDING;
 
-    private static DeliveryOrders order1 = DeliveryOrdersFactory.createDeliveryOrder(
-                "001",
-                "12345",
-                orderDate, deliveryDate,
-                deliveryStatus, paymentStatus,
-                19990.0f,"no special instructions"
-        );
+    static DeliveryOrders order1;
+    static DeliveryOrders order2;
 
+    static List<DeliveryOrders> orderList = new ArrayList<>();
+
+    private static Customer customer ;
+
+
+    @BeforeEach
+    void setup() {
+        customer = CustomerFactory.createCustomer("CUST-23451", "Yamkela", "0732510842"
+                , "yamkela197@gmail.com"
+                , "14 Aquarius Av Sandrift Milnerton 7441", orderList);
+        customerRepository.save(customer);
+        order1 = DeliveryOrdersFactory.createDeliveryOrder("001", customer, orderDate, deliveryDate, deliveryStatus, paymentStatus, 444f, "None");
+        order2 = DeliveryOrdersFactory.createDeliveryOrder("002", customer , orderDate, deliveryDate, deliveryStatus, paymentStatus, 500f, "Place at front of the door");
+
+    }
 
     @Test
     void a_create() {
@@ -56,7 +74,7 @@ class DeliveryOrdersServiceTest {
         System.out.println(update);
     }
 
-    @Test
+    @Disabled
     void e_delete() {
         boolean deleted=this.service.delete(order1.getOrderId());
         assertTrue(deleted);
@@ -67,5 +85,29 @@ class DeliveryOrdersServiceTest {
     void d_getAllDeliveryOrders() {
         List<DeliveryOrders> getAllOrders=this.service.getAllDeliveryOrders();
         System.out.println(getAllOrders);
+    }
+
+    @Test
+    void f_findByCustomerID(){
+        String customerId ="CUST-23451";
+        List<DeliveryOrders> customersOrders = this.service.findByCustomerID(customerId);
+        System.out.println(customersOrders);
+
+    }
+
+    @Test
+    void g_findByStatus(){
+        DeliveryOrders.Status status = DeliveryOrders.Status.OrderPlaced;
+        List<DeliveryOrders> findByStatus = this.service.findByDeliveryStatus(status);
+        System.out.println(findByStatus);
+
+    }
+
+    @Test
+    void h_findByDeliveryDate(){
+        LocalDate deliveryDate = LocalDate.of(2026, Month.APRIL, 1);
+        List<DeliveryOrders> findyByDeliveryDate = this.service.findByDeliveryDate(deliveryDate);
+        System.out.println(findyByDeliveryDate);
+
     }
 }

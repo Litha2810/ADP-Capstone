@@ -72,7 +72,7 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(Map.of(
-                "authenticated ", true,
+                "authenticated", true,
                 "username", authentication.getName(),
                 "roles", authentication.getAuthorities()
 

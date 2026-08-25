@@ -20,16 +20,18 @@ Date: 2026
  */
 @Repository
 public interface DeliveryOrdersRepository extends JpaRepository<DeliveryOrders, String> {
-//    List<DeliveryOrders> findByCustomer_CustomerId(String CustomerId);
-//    List<DeliveryOrders> findByDeliveryStatus(DeliveryOrders.Status deliveryStatus);
-//    List<DeliveryOrders> findByDeliveryDate(LocalDate deliveryDate);
+    List<DeliveryOrders> findByCustomer_CustomerId(String CustomerId);
+    List<DeliveryOrders> findByDeliveryStatus(DeliveryOrders.Status deliveryStatus);
+    List<DeliveryOrders> findByDeliveryDate(LocalDate deliveryDate);
 
+//https://www.baeldung.com/spring-data-jpa-query
 //    @Query("SELECT d FROM DeliveryOrders d WHERE " +
 //            "LOWER(d.orderId) LIKE LOWER(CONCAT('%', :search, '%') ) OR " +
 //            "LOWER(d.customerId.customerName) LIKE LOWER(CONCAT('%', :search, '%'))") // Using query annotation to create custom query with jpsql
 @Query("SELECT d FROM DeliveryOrders d WHERE " +
         "LOWER(d.orderId) LIKE LOWER(CONCAT('%', :search, '%') )")
 
+    //https://www.baeldung.com/spring-data-jpa-pagination-sorting
     Page<DeliveryOrders> searchOrders(@Param("search") String search, Pageable pageable);//this could be the wrong pageable and page so take note of this incase of errors
 
 }
