@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.domain.DeliveryOrders;
 import za.ac.cput.repository.DeliveryOrdersRepo.DeliveryOrdersRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public class DeliveryOrdersService implements IDeliveryOrdersService {
@@ -41,6 +42,26 @@ public class DeliveryOrdersService implements IDeliveryOrdersService {
     public List<DeliveryOrders> getAllDeliveryOrders() {
         return this.repository.findAll();
     }
+
+    @Override
+    public List<DeliveryOrders> findByCustomerID(String customerId) {
+        return this.repository.findByCustomer_CustomerId(customerId);
+    }
+
+    @Override
+    public List<DeliveryOrders> findByDeliveryStatus(DeliveryOrders.Status deliveryStatus) {
+        return this.repository.findByDeliveryStatus(deliveryStatus);
+    }
+
+    @Override
+    public List<DeliveryOrders> findByDeliveryDate(LocalDate deliveryDate) {
+        return this.repository.findByDeliveryDate(deliveryDate);
+    }
+
+//    @Override
+//    public DeliveryOrders assignDriver() {
+//        return null;
+//    }
 
 
     @Override

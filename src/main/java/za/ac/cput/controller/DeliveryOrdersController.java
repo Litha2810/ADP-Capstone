@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/deliveryOrders")//to-do
-@CrossOrigin("http://localhost:8081/")
+@CrossOrigin("http://localhost:5173/")
 public class DeliveryOrdersController {
     private DeliveryOrdersService service;
 

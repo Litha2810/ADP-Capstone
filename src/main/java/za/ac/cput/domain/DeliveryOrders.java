@@ -1,7 +1,8 @@
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -34,23 +35,28 @@ public class DeliveryOrders {
     }
     @Id
     private String orderId;
-    private String customerId;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     private Status deliveryStatus;
     private PaymentStatus paymentStatus;
     private float totalCost;
     private String specialInstructions;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
+//    @JsonBackReference // to stop stackoverflow due to bidirectional relationship but this causes issue of not retrieving customer id
+    @JsonIgnoreProperties({"orders"})
+    private Customer customer;
+
 
     public DeliveryOrders() {
     }
 
-    public DeliveryOrders(String orderId, String customerId, LocalDate orderDate,
+    public DeliveryOrders(String orderId, Customer customer, LocalDate orderDate,
                           LocalDate deliveryDate, Status deliveryStatus, PaymentStatus paymentStatus,
                           float totalCost, String specialInstructions) {
 
         this.orderId = orderId;
-        this.customerId = customerId;
+        this.customer = customer;
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
         this.deliveryStatus = deliveryStatus;
@@ -61,7 +67,7 @@ public class DeliveryOrders {
 
     public DeliveryOrders(Builder builder){
         this.orderId=builder.orderId;
-        this.customerId=builder.customerId;
+        this.customer=builder.customer;
         this.orderDate=builder.orderDate;
         this.deliveryDate=builder.deliveryDate;
         this.deliveryStatus=builder.deliveryStatus;
@@ -75,8 +81,8 @@ public class DeliveryOrders {
         return orderId;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public LocalDate getOrderDate() {
@@ -107,7 +113,7 @@ public class DeliveryOrders {
     public String toString() {
         return "DeliveryOrders{" +
                 "orderId='" + orderId + '\'' +
-                ", customerId='" + customerId + '\'' +
+//                ", customerId='" + customerId + '\'' +
                 ", orderDate=" + orderDate +
                 ", deliveryDate=" + deliveryDate +
                 ", deliveryStatus=" + deliveryStatus +
@@ -119,7 +125,7 @@ public class DeliveryOrders {
 
     public static class Builder{
         private String orderId;
-        private String customerId;
+        private Customer customer;
         private LocalDate orderDate;
         private LocalDate deliveryDate;
         private Status deliveryStatus;
@@ -132,8 +138,8 @@ public class DeliveryOrders {
             return this;
         }
 
-        public Builder setCustomerId(String customerId){
-            this.customerId=customerId;
+        public Builder setCustomer(Customer customer){
+            this.customer=customer;
             return this;
         }
 
@@ -157,10 +163,10 @@ public class DeliveryOrders {
             return this;
         }
 
-         public Builder setTotalCost(float totalCost){
+        public Builder setTotalCost(float totalCost){
             this.totalCost=totalCost;
             return this;
-         }
+        }
         public Builder setSpecialInstructions(String specialInstructions){
             this.specialInstructions=specialInstructions;
             return this;
@@ -168,7 +174,7 @@ public class DeliveryOrders {
 
         public Builder copy(DeliveryOrders order){
             this.orderId=order.orderId;
-            this.customerId=order.customerId;
+            this.customer=order.customer;
             this.orderDate=order.orderDate;
             this.deliveryDate=order.deliveryDate;
             this.deliveryStatus=order.deliveryStatus;

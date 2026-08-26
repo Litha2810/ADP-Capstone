@@ -1,15 +1,5 @@
 package za.ac.cput.repository;
 
-import org.junit.jupiter.api.*;
-import za.ac.cput.domain.DeliveryOrders;
-import za.ac.cput.factory.DeliveryOrdersFactory;
-import za.ac.cput.repository.DeliveryOrdersRepo.DeliveryOrdersRepository;
-import za.ac.cput.repository.DeliveryOrdersRepo.IDeliveryOrdersRepository;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
-
 /*
 DeliveryOrdersRepositoryTest.java
 Delivery Orders module class

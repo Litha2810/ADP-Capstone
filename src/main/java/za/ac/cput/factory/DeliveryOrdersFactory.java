@@ -1,5 +1,6 @@
 package za.ac.cput.factory;
 
+import za.ac.cput.domain.Customer;
 import za.ac.cput.domain.DeliveryOrders;
 import za.ac.cput.util.Helper;
 
@@ -13,20 +14,20 @@ Date: 2026
  */
 
 public class DeliveryOrdersFactory {
-    public static DeliveryOrders createDeliveryOrder(String orderId, String customerId,
+    public static DeliveryOrders createDeliveryOrder(String orderId, Customer customer,
                                                      LocalDate orderDate, LocalDate deliveryDate,
                                                      DeliveryOrders.Status deliveryStatus, DeliveryOrders.PaymentStatus paymentStatus,
                                                      float totalCost, String specialInstructions){
 
         if(Helper.isEmptyOrNull(orderId)||
-           Helper.isEmptyOrNull(customerId) ||
-           Helper.isEmptyOrNull(specialInstructions)
+//           Helper.isEmptyOrNull(customerId) ||
+                Helper.isEmptyOrNull(specialInstructions)
         ){
             return null;
         }
 
         if(Helper.isValidType(orderDate) || Helper.isValidType(deliveryDate) ||
-           Helper.isValidType(deliveryStatus) || Helper.isValidType(paymentStatus)){
+                Helper.isValidType(deliveryStatus) || Helper.isValidType(paymentStatus)){
             return null;
         }
 
@@ -36,7 +37,7 @@ public class DeliveryOrdersFactory {
 
         return new DeliveryOrders.Builder()
                 .setOrderId(orderId)
-                .setCustomerId(customerId)
+                .setCustomer(customer)
                 .setOrderDate(orderDate)
                 .setDeliveryDate(deliveryDate)
                 .setDeliveryStatus(deliveryStatus)
