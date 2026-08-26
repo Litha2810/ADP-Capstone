@@ -1,7 +1,7 @@
 package za.ac.cput.controller;
 
 /*
-Vehicle.java
+VehicleControllerTest.java
 Vehicle controller test model class
 Author: Litha Owethu Mazibuko (240143485)
 Date: 2026

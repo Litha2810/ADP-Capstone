@@ -14,6 +14,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
+VehicleServiceTest.java
+Vehicle service test model class
+Author: Litha Owethu Mazibuko (240143485)
+Date: 2026
+ */
+
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class VehicleServiceTest {
@@ -133,7 +140,6 @@ class VehicleServiceTest {
     @Test
     void e_delete() {
 
-        // Create vehicle first
         service.create(vehicle);
 
         boolean deleted =

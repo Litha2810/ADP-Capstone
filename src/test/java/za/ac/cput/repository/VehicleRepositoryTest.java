@@ -15,6 +15,13 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
+VehicleRepositoryTest.java
+Vehicle repository test model class
+Author: Litha Owethu Mazibuko (240143485)
+Date: 2026
+ */
+
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class VehicleRepositoryTest {
@@ -149,4 +156,5 @@ class VehicleRepositoryTest {
 
         System.out.println("Vehicle deleted successfully.");
     }
+
 }

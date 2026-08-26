@@ -122,7 +122,6 @@ public class Vehicle {
                 '}';
     }
 
-    // Builder
     public static class Builder {
 
         private String vehicleId;

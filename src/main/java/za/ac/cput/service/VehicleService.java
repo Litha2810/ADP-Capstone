@@ -1,7 +1,7 @@
 package za.ac.cput.service;
 
 /*
-Vehicle.java
+VehicleService.java
 Vehicle service model class
 Author: Litha Owethu Mazibuko (240143485)
 Date: 2026
